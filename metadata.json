@@ -1,0 +1,8 @@
+{
+  "name": "BloxAPI Analytics Layer",
+  "description": "A world-class analytics and optimization platform for Roblox developers, featuring AI-driven insights, real-time game tuning, and engagement heatmaps.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
