@@ -11,7 +11,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
         return (
             <div className="bg-white border border-border p-4 rounded-xl shadow-xl">
-                <p className="text-text-muted text-xs font-semibold mb-2 uppercase tracking-wide">{label}</p>
+                <p className="text-text-muted text-xs font-medium mb-2 uppercase tracking-wide">{label}</p>
                 <div className="space-y-1">
                     <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-primary-900"></div>
@@ -36,25 +36,25 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export const TrendChart: React.FC<TrendChartProps> = ({ data, color = "#5d3225", height = 320 }) => {
     return (
-        <div className="w-full h-full min-h-[350px] bg-white border border-border rounded-2xl p-8 shadow-sm">
+        <div className="w-full h-full min-h-[350px] bg-white border border-border rounded-2xl p-8 shadow-sm font-sans">
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h3 className="text-xl font-bold text-text-primary">Revenue Analytics</h3>
+                    <h3 className="text-xl font-medium text-text-primary font-heading">Revenue Analytics</h3>
                     <div className="flex items-center gap-4 mt-1">
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-primary-900"></div>
-                            <span className="text-sm text-text-secondary">Current Period</span>
+                            <span className="text-sm text-text-secondary font-normal">Current Period</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-primary-200"></div>
-                            <span className="text-sm text-text-secondary">Previous Period</span>
+                            <span className="text-sm text-text-secondary font-normal">Previous Period</span>
                         </div>
                     </div>
                 </div>
                 <div className="bg-surface-elevated rounded-lg p-1 flex">
-                    <button className="px-4 py-1.5 text-xs font-bold text-primary-900 bg-white shadow-sm rounded-md transition-all">Daily</button>
-                    <button className="px-4 py-1.5 text-xs font-bold text-text-muted hover:text-text-primary rounded-md transition-all">Weekly</button>
-                    <button className="px-4 py-1.5 text-xs font-bold text-text-muted hover:text-text-primary rounded-md transition-all">Monthly</button>
+                    <button className="px-4 py-1.5 text-xs font-medium text-primary-900 bg-white shadow-sm rounded-md transition-all">Daily</button>
+                    <button className="px-4 py-1.5 text-xs font-medium text-text-muted hover:text-text-primary rounded-md transition-all">Weekly</button>
+                    <button className="px-4 py-1.5 text-xs font-medium text-text-muted hover:text-text-primary rounded-md transition-all">Monthly</button>
                 </div>
             </div>
             <ResponsiveContainer width="100%" height={height}>
