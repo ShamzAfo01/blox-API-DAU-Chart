@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { View } from '../types';
 
@@ -22,7 +21,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate }) => 
         <img
           src="https://bloxx.online/assets/images/logo_trans.png"
           alt="BloxAPI Logo"
-          className="h-10 w-auto object-contain cursor-pointer opacity-90 hover:opacity-100 transition-opacity"
+          className="h-9 w-auto object-contain cursor-pointer opacity-90 hover:opacity-100 transition-opacity"
           onClick={() => onNavigate(View.SCORECARD)}
         />
       </div>
@@ -32,23 +31,23 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate }) => 
           <button
             key={item.id}
             onClick={() => onNavigate(item.id)}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-sm border ${currentView === item.id
-                ? 'bg-primary-900/20 text-primary-300 border-primary-900/50 shadow-sm'
+            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all font-medium text-sm border ${currentView === item.id
+                ? 'bg-primary-50 text-primary-900 border-primary-100 shadow-sm'
                 : 'text-text-secondary border-transparent hover:bg-surface-elevated hover:text-text-primary'
               }`}
           >
-            <span className="text-lg">{item.icon}</span>
+            <span className="text-lg grayscale opacity-80">{item.icon}</span>
             {item.label}
           </button>
         ))}
       </nav>
 
-      <div className="p-5 bg-surface-elevated border border-border rounded-2xl shadow-sm">
+      <div className="p-5 bg-surface-elevated border border-border rounded-xl">
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-[10px] font-bold text-primary-300 uppercase tracking-widest bg-primary-900/30 px-2 py-0.5 rounded border border-primary-900/50">PRO TIER</span>
+          <span className="text-[10px] font-bold text-primary-700 uppercase tracking-widest bg-white px-2 py-0.5 rounded border border-primary-100">PRO TIER</span>
         </div>
         <p className="text-xs text-text-muted leading-relaxed mb-4">Neural tuning active on 3 experiences.</p>
-        <button className="w-full py-2 bg-primary hover:bg-primary-600 text-white rounded-lg text-xs font-bold transition-all shadow-md active:scale-95">
+        <button className="w-full py-2 bg-primary hover:bg-primary-600 text-white rounded-lg text-xs font-bold transition-all shadow-sm active:scale-95">
           Manage Token
         </button>
       </div>

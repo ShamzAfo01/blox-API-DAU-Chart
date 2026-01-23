@@ -40,13 +40,13 @@ export const KPITile: React.FC<KPITileProps> = ({ kpi, onClick }) => {
     return (
         <motion.div
             whileHover={{ y: -2 }}
-            className="kpi-card bg-surface border border-border rounded-xl p-5 shadow-soft cursor-pointer relative overflow-hidden group hover:border-border/50 transition-colors"
+            className="kpi-card bg-surface border border-border rounded-xl p-5 shadow-soft hover:shadow-hover cursor-pointer relative overflow-hidden group hover:border-primary-200 transition-all duration-300"
             onClick={onClick}
         >
             <div className="flex justify-between items-start mb-2">
                 <div className="flex items-center gap-2">
-                    <span className="text-sm shadow-sm">{getStatusEmoji(kpi.status)}</span>
-                    <span className="text-text-secondary font-medium text-sm">{kpi.label}</span>
+                    <span className="text-sm">{getStatusEmoji(kpi.status)}</span>
+                    <span className="text-text-secondary font-medium text-sm text-balance">{kpi.label}</span>
                 </div>
                 <div className={`flex items-center gap-1 px-2 py-0.5 rounded textxs font-bold uppercase tracking-wide border ${getDeltaColor(kpi.deltaType)}`}>
                     {getDeltaIcon(kpi.deltaType)}
@@ -55,17 +55,17 @@ export const KPITile: React.FC<KPITileProps> = ({ kpi, onClick }) => {
             </div>
 
             <div className="flex items-end justify-between mt-4">
-                <div className="text-2xl font-bold text-text-primary tabular-nums tracking-tight">
+                <div className="text-3xl font-bold text-text-primary tabular-nums tracking-tight">
                     {kpi.value}
                 </div>
 
-                <div className="h-10 w-24 opacity-60 group-hover:opacity-100 transition-opacity">
+                <div className="h-10 w-24 opacity-40 group-hover:opacity-100 transition-opacity">
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={data}>
                             <Line
                                 type="monotone"
                                 dataKey="val"
-                                stroke={kpi.deltaType === 'negative' ? '#EF4444' : '#5d3225'}
+                                stroke={kpi.deltaType === 'negative' ? '#b91c1c' : '#5d3225'}
                                 strokeWidth={2}
                                 dot={false}
                             />
