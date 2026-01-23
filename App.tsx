@@ -1,77 +1,78 @@
-
 import React, { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Scorecard } from './components/Scorecard';
+import { Loops } from './components/Loops';
+import { Monetize } from './components/Monetize';
+import { Experiments } from './components/Experiments';
+import { Autopilot } from './components/Autopilot';
 import { View } from './types';
-
-// Placeholder for other views
-const PlaceholderView = ({ title }: { title: string }) => (
-  <div className="flex flex-col items-center justify-center h-[60vh] text-center">
-    <div className="text-4xl mb-4">🚧</div>
-    <h2 className="text-2xl font-bold text-text-primary mb-2">{title}</h2>
-    <p className="text-text-secondary max-w-md">
-      This module is currently under construction. Check back later for updates.
-    </p>
-  </div>
-);
+import { Menu } from 'lucide-react';
 
 function App() {
   const [currentView, setCurrentView] = useState<View>(View.SCORECARD);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const renderView = () => {
     switch (currentView) {
       case View.SCORECARD:
         return <Scorecard />;
       case View.LOOPS:
-        return <PlaceholderView title="Engagement Loops" />;
+        return <Loops />;
       case View.MONETIZE:
-        return <PlaceholderView title="Monetization" />;
+        return <Monetize />;
       case View.EXPERIMENTS:
-        return <PlaceholderView title="Experiments" />;
+        return <Experiments />;
       case View.AUTOPILOT:
-        return <PlaceholderView title="Autopilot Config" />;
+        return <Autopilot />;
       default:
         return <Scorecard />;
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar currentView={currentView} onNavigate={setCurrentView} />
+    <div className="flex h-screen bg-background text-text-primary font-sans overflow-hidden">
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/20 z-20 lg:hidden backdrop-blur-sm"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
 
-      <main className="flex-1 overflow-x-hidden p-6 lg:p-12">
-        <div className="max-w-[1200px] mx-auto h-full">
-          {/* Mobile Header */}
-          <div className="lg:hidden flex items-center justify-between mb-8 p-4 bg-surface border border-border rounded-2xl shadow-sm">
-            <div className="flex items-center gap-2">
-              <img
-                src="https://bloxx.online/assets/images/logo_trans.png"
-                alt="BloxAPI Logo"
-                className="h-8 w-auto object-contain"
-              />
-            </div>
-            <select
-              className="bg-surface-elevated border-border text-[11px] font-bold text-text-primary rounded-full px-4 py-1.5 focus:ring-1 focus:ring-primary-500"
-              value={currentView}
-              onChange={(e) => setCurrentView(e.target.value as View)}
+      {/* Sidebar */}
+      <div className={`
+        fixed lg:static inset-y-0 left-0 z-30 w-64 bg-surface border-r border-border transform transition-transform duration-200 ease-in-out
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
+        <Sidebar currentView={currentView} onViewChange={(view) => {
+          setCurrentView(view);
+          setIsSidebarOpen(false);
+        }} />
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden relative">
+        {/* Mobile Header */}
+        <div className="lg:hidden h-14 border-b border-border bg-surface flex items-center px-4 justify-between shrink-0">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="p-2 -ml-2 hover:bg-surface-elevated rounded-lg text-text-secondary"
             >
-              <option value={View.SCORECARD}>SCORECARD</option>
-              <option value={View.LOOPS}>LOOPS</option>
-              <option value={View.MONETIZE}>MONETIZE</option>
-              <option value={View.EXPERIMENTS}>EXPERIMENTS</option>
-              <option value={View.AUTOPILOT}>AUTOPILOT</option>
-            </select>
+              <Menu size={20} />
+            </button>
+            <span className="font-bold text-lg text-primary">BloxAPI</span>
           </div>
+          <div className="w-8 h-8 rounded-full bg-primary-100 border border-primary-200" />
+        </div>
 
-          <div className="min-h-[80vh]">
+        {/* Scrollable Content Area */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 lg:p-8">
+          <div className="max-w-7xl mx-auto h-full">
             {renderView()}
           </div>
-
-          <footer className="mt-12 pt-8 border-t border-border text-center text-text-muted text-[10px] font-bold uppercase tracking-widest">
-            <p>&copy; {new Date().getFullYear()} BloxAPI Systems. AI Layer Active.</p>
-          </footer>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
