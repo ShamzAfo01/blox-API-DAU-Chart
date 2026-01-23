@@ -1,45 +1,65 @@
 import React from 'react';
 import { KPITile } from './KPITile';
-import { RecommendationCard } from './RecommendationCard';
 import { TrendChart } from './TrendChart';
+import { DistributionChart } from './DistributionChart';
+import { GoalGauge } from './GoalGauge';
+import { RecommendationCard } from './RecommendationCard'; // Kept for below the fold
 import { KPI, Recommendation } from '../types';
 import { motion } from 'framer-motion';
 
 export const Scorecard: React.FC = () => {
     const kpis: KPI[] = [
         {
-            id: 'retention',
-            label: 'D1 Retention',
-            value: '42.8%',
-            delta: '+1.2pp',
+            id: 'revenue',
+            label: 'Total Sales',
+            value: '$983,410',
+            delta: '+3.34%',
             deltaType: 'positive',
             status: 'healthy',
-            history: [38, 39, 41, 40, 42, 42.8, 43]
+            history: [300, 400, 350, 500, 600, 700, 900]
         },
         {
-            id: 'engagement',
-            label: 'Avg Session Time',
-            value: '12m 30s',
-            delta: '-4.3%',
+            id: 'orders',
+            label: 'Total Orders',
+            value: '58,375',
+            delta: '-2.89%',
             deltaType: 'negative',
             status: 'watch',
-            history: [14, 13.5, 13.2, 13.0, 12.8, 12.5, 12.2]
+            history: [60, 55, 50, 45, 48, 42, 40]
         },
         {
-            id: 'monetization',
-            label: 'ARPDAU',
-            value: '$0.14',
-            delta: '+0.8%',
+            id: 'visitors',
+            label: 'Total Visitors',
+            value: '237,782',
+            delta: '+8.02%',
             deltaType: 'positive',
             status: 'healthy',
-            history: [0.12, 0.12, 0.13, 0.13, 0.14, 0.14, 0.14]
+            history: [200, 220, 210, 240, 235, 260, 280]
         }
+    ];
+
+    const trendData = [
+        { date: '12 Aug', value: 14000, previousValue: 12000 },
+        { date: '13 Aug', value: 16500, previousValue: 12500 },
+        { date: '14 Aug', value: 14200, previousValue: 13000 },
+        { date: '15 Aug', value: 18000, previousValue: 14000 },
+        { date: '16 Aug', value: 21000, previousValue: 15000 },
+        { date: '17 Aug', value: 17500, previousValue: 15500 },
+        { date: '18 Aug', value: 16800, previousValue: 16000 },
+        { date: '19 Aug', value: 19500, previousValue: 16500 },
+    ];
+
+    const categoryData = [
+        { name: 'Electronics', value: 1200000 },
+        { name: 'Fashion', value: 950000 },
+        { name: 'Home & Kitchen', value: 750000 },
+        { name: 'Beauty', value: 500000 },
     ];
 
     const recommendations: Recommendation[] = [
         {
             id: 'rec1',
-            title: 'Cut Time-to-First-Fun by 20–30s to lift D1 retention.',
+            title: 'Optimize "Fashion" segment ad spend.',
             impact: 'High',
             confidence: 85,
             effort: 'Low',
@@ -48,7 +68,7 @@ export const Scorecard: React.FC = () => {
         },
         {
             id: 'rec2',
-            title: 'Mobile players are dropping during Step 2 of tutorial.',
+            title: 'High abandonment in checkout flow.',
             impact: 'Medium',
             confidence: 90,
             effort: 'Medium',
@@ -57,31 +77,23 @@ export const Scorecard: React.FC = () => {
         }
     ];
 
-    const chartData = [
-        { date: 'Mon', value: 12400 },
-        { date: 'Tue', value: 12800 },
-        { date: 'Wed', value: 13900 },
-        { date: 'Thu', value: 13500 },
-        { date: 'Fri', value: 14200 },
-        { date: 'Sat', value: 15100 },
-        { date: 'Sun', value: 16000 },
-    ];
-
     return (
-        <div className="space-y-8 animate-fade-in">
+        <div className="space-y-8 animate-fade-in pb-12">
             {/* Header */}
-            <div className="flex justify-between items-end">
-                <div>
-                    <h1 className="text-2xl font-bold text-text-primary mb-1">Scorecard</h1>
-                    <p className="text-text-secondary text-sm">Today’s health + what to do next</p>
-                </div>
-                <div className="text-right">
-                    <span className="text-xs font-mono text-text-muted block mb-1">LAST UPDATED</span>
-                    <span className="text-sm font-medium text-text-primary">Just now</span>
+            <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-border shadow-sm">
+                <h1 className="text-2xl font-bold text-text-primary">Dashboard</h1>
+                <div className="flex items-center gap-4">
+                    <div className="relative">
+                        <input type="text" placeholder="Search stock, order, etc" className="bg-surface-elevated pl-10 pr-4 py-2 rounded-lg text-sm border-none focus:ring-1 focus:ring-primary-500 w-64 text-text-primary placeholder:text-text-muted" />
+                        <span className="absolute left-3 top-2.5 opacity-40">🔍</span>
+                    </div>
+                    <div className="flex -space-x-2">
+                        <div className="w-8 h-8 rounded-full bg-primary-100 border-2 border-white flex items-center justify-center text-xs font-bold text-primary-900">MG</div>
+                    </div>
                 </div>
             </div>
 
-            {/* KPI Row - Above the Fold */}
+            {/* KPI Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {kpis.map((kpi, index) => (
                     <motion.div
@@ -95,42 +107,29 @@ export const Scorecard: React.FC = () => {
                 ))}
             </div>
 
-            {/* Mid Row: Opportunities & Risks */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2">
-                    <h2 className="text-lg font-bold text-text-primary mb-4 flex items-center gap-2">
-                        <span>💡</span> Recommended Actions
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
+            {/* Main Grid: Revenue & Targets */}
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 min-h-[400px]">
+                <div className="xl:col-span-2 h-full">
+                    <TrendChart data={trendData} />
+                </div>
+                <div className="xl:col-span-1 h-full">
+                    <GoalGauge current={510000} target={600000} />
+                </div>
+            </div>
+
+            {/* Secondary Grid: Categories & Recommendations */}
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                <div className="xl:col-span-1 h-full">
+                    <DistributionChart data={categoryData} />
+                </div>
+                <div className="xl:col-span-2">
+                    <h3 className="text-xl font-bold text-text-primary mb-4">Recommended Actions</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {recommendations.map((rec) => (
                             <RecommendationCard key={rec.id} recommendation={rec} />
                         ))}
                     </div>
                 </div>
-
-                <div className="lg:col-span-1">
-                    <h2 className="text-lg font-bold text-text-primary mb-4 flex items-center gap-2">
-                        <span>📉</span> Recent Alerts
-                    </h2>
-                    <div className="bg-surface border border-border rounded-xl p-5 h-full min-h-[220px]">
-                        <div className="flex items-start gap-3 mb-4">
-                            <span className="text-xl">⚠️</span>
-                            <div>
-                                <p className="text-sm font-bold text-text-primary">Retention Anomaly Detected</p>
-                                <p className="text-xs text-text-secondary mt-1">D1 Retention dropped 5% in creating segments.</p>
-                            </div>
-                        </div>
-                        <div className="h-px bg-border my-4"></div>
-                        <button className="w-full py-2 text-sm text-text-secondary hover:text-text-primary border border-dashed border-border rounded hover:border-text-muted transition-colors">
-                            View Alert History
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Bottom Fold: Trends */}
-            <div className="pt-4">
-                <TrendChart data={chartData} />
             </div>
         </div>
     );
