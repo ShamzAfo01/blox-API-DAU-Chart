@@ -49,18 +49,20 @@ export const Scorecard: React.FC = () => {
     ];
 
     return (
-        <div className="space-y-6 animate-fade-in pb-12 font-sans">
-            {/* Header */}
-            <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-border shadow-sm">
-                <h1 className="text-xl font-medium text-text-primary font-heading">Dashboard</h1>
-                <div className="flex items-center gap-4">
-                    <div className="bg-surface-elevated rounded-lg px-2 py-1 text-xs text-text-muted">
-                        BloxAPI v2.0
-                    </div>
+        <div className="space-y-8 animate-fade-in pb-12 font-sans text-text-primary">
+            {/* Simplified Header */}
+            <div className="flex justify-between items-center py-2">
+                <h1 className="text-2xl font-medium text-text-primary font-heading tracking-tight">Dashboard</h1>
+                <div className="relative">
+                    <input type="text" placeholder="Search..." className="bg-surface border border-border pl-8 pr-4 py-1.5 rounded-full text-sm focus:ring-1 focus:ring-primary-500 w-48 text-text-primary placeholder:text-text-muted transition-all" />
+                    <span className="absolute left-2.5 top-2 opacity-40 text-xs">🔍</span>
                 </div>
             </div>
 
-            {/* KPI Row */}
+            {/* Hero: Feature Carousel */}
+            <FeatureCarousel className="w-full" />
+
+            {/* KPI Row (Now below Hero) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {kpis.map((kpi, index) => (
                     <motion.div
@@ -74,8 +76,8 @@ export const Scorecard: React.FC = () => {
                 ))}
             </div>
 
-            {/* Main Grid Mix */}
-            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 min-h-[400px] items-start">
+            {/* Main Analytics Grid */}
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 min-h-[400px]">
                 {/* Trend Chart - Spans 2 Cols */}
                 <div className="xl:col-span-2 h-full">
                     <TrendChart data={trendData} height={380} />
@@ -84,11 +86,6 @@ export const Scorecard: React.FC = () => {
                 {/* Goal Gauge - Spans 1 Col */}
                 <div className="xl:col-span-1 h-full">
                     <GoalGauge current={510000} target={600000} />
-                </div>
-
-                {/* Feature Carousel - Spans 1 Col (Replaces old List/Recs) */}
-                <div className="xl:col-span-1 h-full flex flex-col gap-6">
-                    <FeatureCarousel className="flex-1" />
                 </div>
             </div>
         </div>
