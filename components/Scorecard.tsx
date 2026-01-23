@@ -1,10 +1,9 @@
 import React from 'react';
 import { KPITile } from './KPITile';
 import { TrendChart } from './TrendChart';
-import { DistributionChart } from './DistributionChart';
 import { GoalGauge } from './GoalGauge';
-import { RecommendationCard } from './RecommendationCard'; // Kept for below the fold
-import { KPI, Recommendation } from '../types';
+import { FeatureCarousel } from './FeatureCarousel';
+import { KPI } from '../types';
 import { motion } from 'framer-motion';
 
 export const Scorecard: React.FC = () => {
@@ -20,8 +19,8 @@ export const Scorecard: React.FC = () => {
         },
         {
             id: 'orders',
-            label: 'Total Orders',
-            value: '58,375',
+            label: 'Avg. Session',
+            value: '14m 20s',
             delta: '-2.89%',
             deltaType: 'negative',
             status: 'watch',
@@ -29,7 +28,7 @@ export const Scorecard: React.FC = () => {
         },
         {
             id: 'visitors',
-            label: 'Total Visitors',
+            label: 'Daily Active',
             value: '237,782',
             delta: '+8.02%',
             deltaType: 'positive',
@@ -49,46 +48,14 @@ export const Scorecard: React.FC = () => {
         { date: '19 Aug', value: 19500, previousValue: 16500 },
     ];
 
-    const categoryData = [
-        { name: 'Electronics', value: 1200000 },
-        { name: 'Fashion', value: 950000 },
-        { name: 'Home & Kitchen', value: 750000 },
-        { name: 'Beauty', value: 500000 },
-    ];
-
-    const recommendations: Recommendation[] = [
-        {
-            id: 'rec1',
-            title: 'Optimize "Fashion" segment ad spend.',
-            impact: 'High',
-            confidence: 85,
-            effort: 'Low',
-            risk: 'Low',
-            type: 'opportunity'
-        },
-        {
-            id: 'rec2',
-            title: 'High abandonment in checkout flow.',
-            impact: 'Medium',
-            confidence: 90,
-            effort: 'Medium',
-            risk: 'Medium',
-            type: 'risk'
-        }
-    ];
-
     return (
-        <div className="space-y-8 animate-fade-in pb-12">
+        <div className="space-y-6 animate-fade-in pb-12 font-sans">
             {/* Header */}
             <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-border shadow-sm">
-                <h1 className="text-2xl font-bold text-text-primary">Dashboard</h1>
+                <h1 className="text-xl font-medium text-text-primary font-heading">Dashboard</h1>
                 <div className="flex items-center gap-4">
-                    <div className="relative">
-                        <input type="text" placeholder="Search stock, order, etc" className="bg-surface-elevated pl-10 pr-4 py-2 rounded-lg text-sm border-none focus:ring-1 focus:ring-primary-500 w-64 text-text-primary placeholder:text-text-muted" />
-                        <span className="absolute left-3 top-2.5 opacity-40">🔍</span>
-                    </div>
-                    <div className="flex -space-x-2">
-                        <div className="w-8 h-8 rounded-full bg-primary-100 border-2 border-white flex items-center justify-center text-xs font-bold text-primary-900">MG</div>
+                    <div className="bg-surface-elevated rounded-lg px-2 py-1 text-xs text-text-muted">
+                        BloxAPI v2.0
                     </div>
                 </div>
             </div>
@@ -107,28 +74,21 @@ export const Scorecard: React.FC = () => {
                 ))}
             </div>
 
-            {/* Main Grid: Revenue & Targets */}
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 min-h-[400px]">
+            {/* Main Grid Mix */}
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 min-h-[400px] items-start">
+                {/* Trend Chart - Spans 2 Cols */}
                 <div className="xl:col-span-2 h-full">
-                    <TrendChart data={trendData} />
+                    <TrendChart data={trendData} height={380} />
                 </div>
+
+                {/* Goal Gauge - Spans 1 Col */}
                 <div className="xl:col-span-1 h-full">
                     <GoalGauge current={510000} target={600000} />
                 </div>
-            </div>
 
-            {/* Secondary Grid: Categories & Recommendations */}
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                <div className="xl:col-span-1 h-full">
-                    <DistributionChart data={categoryData} />
-                </div>
-                <div className="xl:col-span-2">
-                    <h3 className="text-xl font-bold text-text-primary mb-4">Recommended Actions</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {recommendations.map((rec) => (
-                            <RecommendationCard key={rec.id} recommendation={rec} />
-                        ))}
-                    </div>
+                {/* Feature Carousel - Spans 1 Col (Replaces old List/Recs) */}
+                <div className="xl:col-span-1 h-full flex flex-col gap-6">
+                    <FeatureCarousel className="flex-1" />
                 </div>
             </div>
         </div>
