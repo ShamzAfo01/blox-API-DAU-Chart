@@ -1,42 +1,60 @@
 import React from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface TrendChartProps {
-    data: { date: string; value: number }[];
-    color?: string;
+    data: { date: string; value: number; previousValue?: number }[];
+    color?: string; // This will now serve as the primary brown color
     height?: number;
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
         return (
-            <div className="bg-white border border-border p-3 rounded-lg shadow-xl">
-                <p className="text-text-muted text-xs mb-1">{label}</p>
-                <p className="text-text-primary font-bold text-lg">
-                    {payload[0].value.toLocaleString()}
-                    <span className="text-text-muted text-xs font-normal ml-1">DAU</span>
-                </p>
+            <div className="bg-white border border-border p-4 rounded-xl shadow-xl">
+                <p className="text-text-muted text-xs font-semibold mb-2 uppercase tracking-wide">{label}</p>
+                <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary-900"></div>
+                        <p className="text-text-primary font-bold text-lg">
+                            ${payload[0].value.toLocaleString()}
+                        </p>
+                    </div>
+                    {payload[1] && (
+                        <div className="flex items-center gap-2 opacity-60">
+                            <div className="w-2 h-2 rounded-full bg-primary-300"></div>
+                            <p className="text-text-secondary font-medium text-sm">
+                                ${payload[1].value.toLocaleString()}
+                            </p>
+                        </div>
+                    )}
+                </div>
             </div>
         );
     }
     return null;
 };
 
-export const TrendChart: React.FC<TrendChartProps> = ({ data, color = "#5d3225", height = 300 }) => {
-    // Calculate median for the reference line
-    const values = data.map(d => d.value);
-    const median = values.sort((a, b) => a - b)[Math.floor(values.length / 2)];
-
+export const TrendChart: React.FC<TrendChartProps> = ({ data, color = "#5d3225", height = 320 }) => {
     return (
-        <div className="w-full h-full min-h-[300px] bg-surface border border-border rounded-xl p-6 shadow-soft">
-            <div className="flex items-center justify-between mb-6">
+        <div className="w-full h-full min-h-[350px] bg-white border border-border rounded-2xl p-8 shadow-sm">
+            <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h3 className="text-lg font-bold text-text-primary">Engagement Trend</h3>
-                    <p className="text-sm text-text-secondary">Daily Active Users against median baseline.</p>
+                    <h3 className="text-xl font-bold text-text-primary">Revenue Analytics</h3>
+                    <div className="flex items-center gap-4 mt-1">
+                        <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-primary-900"></div>
+                            <span className="text-sm text-text-secondary">Current Period</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-primary-200"></div>
+                            <span className="text-sm text-text-secondary">Previous Period</span>
+                        </div>
+                    </div>
                 </div>
-                <div className="flex gap-2">
-                    <button className="px-3 py-1 text-xs font-medium bg-primary-50 text-primary-900 rounded-md border border-primary-100 shadow-sm">7D</button>
-                    <button className="px-3 py-1 text-xs font-medium text-text-secondary hover:text-text-primary hover:bg-surface-elevated rounded-md transition-colors">30D</button>
+                <div className="bg-surface-elevated rounded-lg p-1 flex">
+                    <button className="px-4 py-1.5 text-xs font-bold text-primary-900 bg-white shadow-sm rounded-md transition-all">Daily</button>
+                    <button className="px-4 py-1.5 text-xs font-bold text-text-muted hover:text-text-primary rounded-md transition-all">Weekly</button>
+                    <button className="px-4 py-1.5 text-xs font-bold text-text-muted hover:text-text-primary rounded-md transition-all">Monthly</button>
                 </div>
             </div>
             <ResponsiveContainer width="100%" height={height}>
@@ -46,33 +64,47 @@ export const TrendChart: React.FC<TrendChartProps> = ({ data, color = "#5d3225",
                 >
                     <defs>
                         <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor={color} stopOpacity={0.1} />
+                            <stop offset="5%" stopColor={color} stopOpacity={0.2} />
                             <stop offset="95%" stopColor={color} stopOpacity={0} />
                         </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E4E4E7" />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                     <XAxis
                         dataKey="date"
                         axisLine={false}
                         tickLine={false}
-                        tick={{ fill: '#71717A', fontSize: 11 }}
-                        dy={10}
+                        tick={{ fill: '#9CA3AF', fontSize: 12, fontWeight: 500 }}
+                        dy={15}
                     />
                     <YAxis
                         axisLine={false}
                         tickLine={false}
-                        tick={{ fill: '#71717A', fontSize: 11 }}
+                        tick={{ fill: '#9CA3AF', fontSize: 12, fontWeight: 500 }}
+                        tickFormatter={(value) => `${value / 1000}k`}
                         dx={-10}
                     />
-                    <Tooltip content={<CustomTooltip />} />
-                    <ReferenceLine y={median} stroke="#A1A1AA" strokeDasharray="3 3" label={{ position: 'right', value: 'Median', fill: '#A1A1AA', fontSize: 10 }} />
+                    <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#E5E7EB', strokeWidth: 1 }} />
+
+                    {/* Previous Period Line (Dashed) */}
+                    <Area
+                        type="monotone"
+                        dataKey="previousValue"
+                        stroke="#eaddd7"
+                        strokeWidth={3}
+                        strokeDasharray="5 5"
+                        fill="transparent"
+                        activeDot={false}
+                    />
+
+                    {/* Current Period Area */}
                     <Area
                         type="monotone"
                         dataKey="value"
                         stroke={color}
-                        strokeWidth={2}
+                        strokeWidth={3}
                         fillOpacity={1}
                         fill="url(#colorValue)"
+                        activeDot={{ r: 6, strokeWidth: 4, stroke: '#fff', fill: color }}
                     />
                 </AreaChart>
             </ResponsiveContainer>
